@@ -1,10 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
 const CategoriesScreen = props => {
     return (
       <View style={styles.screen}>
         <Text>The Categories Screen</Text>
+        <Button title="Go To Meals!" onPress={() => {
+          //=====================================================//
+          // you can pass it without an object so the default will
+          // be .navigate('CategorMeals') it will do the same as
+          // you pass it to a routeName key name
+          props.navigation.navigate({routeName: 'CategoryMeals'});
+          //=====================================================//
+        }}/>
       </View>
     );
     
