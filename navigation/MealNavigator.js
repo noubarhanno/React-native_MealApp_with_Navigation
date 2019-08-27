@@ -1,6 +1,7 @@
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons'
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import CategoriesScreen from '../screens/CategeriesScreen';
 import CategoryMealsScreen from '../screens/CategoryMealsScreen';
 import MealDetailScreen from '../screens/MealDetailScreen';
@@ -40,32 +41,63 @@ const MealsNavigator = createStackNavigator({
     }
 });
 
-const MealsFavTabNavigator = createBottomTabNavigator({
-    // this is a tab navigator at the bottom and 
-    // we setup the Meals tab to be MealsNavigator which 
-    // we create on createStackNavigator which will lead us to 
-    // the first screen on the stack so we can export this navigator as 
+const tabScreenConfig = {
+    // this is a tab navigator at the bottom and
+    // we setup the Meals tab to be MealsNavigator which
+    // we create on createStackNavigator which will lead us to
+    // the first screen on the stack so we can export this navigator as
     // the stack navigator is nested
-    Meals: {screen: MealsNavigator, navigationOptions: {
-        tabBarIcon: (tabInfo) => {
-            // tabInfor is passed automatically to the tabBarIcon which contains tintColor
-            // which we setup down in the tabBarOptions (activeTintColor)
-            return <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />;
-        }
-    }},
-    Favorites: {screen: FavoritesScreen, navigationOptions: {
-        tabBarLabel: 'Favorites!',
-        tabBarIcon: (tabInfo) => {
-            // tabInfor is passed automatically to the tabBarIcon which contains tintColor
-            // which we setup down in the tabBarOptions (activeTintColor)
-            return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
-        }
-    }}
-}, {
-    tabBarOptions: {
-        activeTintColor: Colors.secondaryColor
+    Meals: {
+      screen: MealsNavigator,
+      navigationOptions: {
+        tabBarIcon: tabInfo => {
+          // tabInfor is passed automatically to the tabBarIcon which contains tintColor
+          // which we setup down in the tabBarOptions (activeTintColor)
+          return (
+            <Ionicons
+              name="ios-restaurant"
+              size={25}
+              color={tabInfo.tintColor}
+            />
+          );
+        },
+        tabBarColor: Colors.primaryColor
+      }
+    },
+    Favorites: {
+      screen: FavoritesScreen,
+      navigationOptions: {
+        tabBarLabel: "Favorites!",
+        tabBarIcon: tabInfo => {
+          // tabInfor is passed automatically to the tabBarIcon which contains tintColor
+          // which we setup down in the tabBarOptions (activeTintColor)
+          return (
+            <Ionicons
+              name="ios-star"
+              size={25}
+              color={tabInfo.tintColor}
+            />
+          );
+        },
+        tabBarColor: Colors.secondaryColor
+      }
     }
-});
+  }
+
+const MealsFavTabNavigator =
+  Platform.OS === "android"
+    ? createMaterialBottomTabNavigator(tabScreenConfig, {
+        activeTintColor: 'white',
+        shifting: true,
+        barStyle: {
+            backgroundColor: Colors.primaryColor
+        }
+      })
+    : createBottomTabNavigator(tabScreenConfig, {
+        tabBarOptions: {
+          activeTintColor: Colors.secondaryColor
+        }
+      });
 
 export default createAppContainer(MealsFavTabNavigator);
 
