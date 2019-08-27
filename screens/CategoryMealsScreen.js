@@ -1,10 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import { CATEGORIES } from '../data/dummy-data';
 
 const CategoryMealsScreen = props => {
+  const catId = props.navigation.getParam('categoryId');
+
+  const selectedCategory = CATEGORIES.find(cat => cat.id === catId)
     return (
       <View style={styles.screen}>
-        <Text>The Category Meal Screen</Text>
+        <Text>The Meals Category Screen</Text>
+        <Text>{selectedCategory.title}</Text>
         <Button title="Go To Meal Detail!" onPress={() => props.navigation.replace('MealDetail')} />
         <Button title="Back" onPress={() => {
           props.navigation.pop();
@@ -13,6 +18,16 @@ const CategoryMealsScreen = props => {
     );
 
     
+};
+
+CategoryMealsScreen.navigationOptions = (navigationData) => {
+  const catId = navigationData.navigation.getParam('categoryId');
+
+  const selectedCategory = CATEGORIES.find(cat => cat.id === catId);
+
+  return {
+    headerTitle: selectedCategory.title,
+  };
 };
 
 const styles = StyleSheet.create({
@@ -57,3 +72,27 @@ export default CategoryMealsScreen;
 // and replace it with the one you navigate to 
 // then you cannot back to it
 //====================================================//
+
+
+//=============================================//
+// the component it self is javascript options
+// where you can pass an options to it which can be 
+// (means the options) a javascript object 
+// or function if we need to access the props and 
+// we are out of the object definition where
+// the props is passed
+
+// CategoryMealsScreen.navigationOptions = (navigationData) => {
+//   const catId = navigationData.navigation.getParam('categoryId');
+
+//   const selectedCategory = CATEGORIES.find(cat => cat.id === catId);
+
+//   return {
+//     headerTitle: selectedCategory.title,
+//     headerStyle: {
+//       backgroundColor:Platform.OS==='android' ?  Colors.primaryColor : 'white'
+//     },
+//     headerTintColor: Platform.OS==='android' ?  'white' : Colors.primaryColor
+//   };
+// };
+//=============================================//
