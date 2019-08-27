@@ -1,4 +1,6 @@
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import React from 'react';
+import { Ionicons } from '@expo/vector-icons'
 import CategoriesScreen from '../screens/CategeriesScreen';
 import CategoryMealsScreen from '../screens/CategoryMealsScreen';
 import MealDetailScreen from '../screens/MealDetailScreen';
@@ -44,8 +46,25 @@ const MealsFavTabNavigator = createBottomTabNavigator({
     // we create on createStackNavigator which will lead us to 
     // the first screen on the stack so we can export this navigator as 
     // the stack navigator is nested
-    Meals: MealsNavigator,
-    Favorites: FavoritesScreen
+    Meals: {screen: MealsNavigator, navigationOptions: {
+        tabBarIcon: (tabInfo) => {
+            // tabInfor is passed automatically to the tabBarIcon which contains tintColor
+            // which we setup down in the tabBarOptions (activeTintColor)
+            return <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />;
+        }
+    }},
+    Favorites: {screen: FavoritesScreen, navigationOptions: {
+        tabBarLabel: 'Favorites!',
+        tabBarIcon: (tabInfo) => {
+            // tabInfor is passed automatically to the tabBarIcon which contains tintColor
+            // which we setup down in the tabBarOptions (activeTintColor)
+            return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
+        }
+    }}
+}, {
+    tabBarOptions: {
+        activeTintColor: Colors.secondaryColor
+    }
 });
 
 export default createAppContainer(MealsFavTabNavigator);
