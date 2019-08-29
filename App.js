@@ -3,11 +3,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import MealsNavigator from './navigation/MealNavigator';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension'
+import mealsReducer from './store/reducers/meals';
+import { Provider } from 'react-redux';
 //===========how to setup react-native-screen for optamization========//
 import { useScreens } from 'react-native-screens';
 
 useScreens();
 //=====================================================================//
+
+const rootReducer = combineReducers({
+  meals: mealsReducer
+});
+
+const store = createStore(rootReducer, composeWithDevTools());
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -26,7 +36,9 @@ export default function App() {
   };
 
   return (
-    <MealsNavigator />
+    <Provider store={store}>
+      <MealsNavigator />
+    </Provider>
   );
 }
 
